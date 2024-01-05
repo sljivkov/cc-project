@@ -22,9 +22,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 	c.BindJSON(user)
 	id, err := h.userService.Register(user)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"status": "User already exist",
-		})
+		c.Status(400)
 		return
 	}
 

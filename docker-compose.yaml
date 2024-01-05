@@ -1,6 +1,16 @@
 version: '3.8'
 
 services:
+  postgres-worker:
+    container_name: postgres-worker
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: worker
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+
   postgres:
     container_name: postgres
     image: postgres:latest
@@ -10,6 +20,20 @@ services:
       POSTGRES_PASSWORD: posgtres
     ports:
       - "5432:5432"
+
+  client:
+    container_name: client_app_1
+    build:
+      context: ./work-lib
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres-worker://admin:postgres:5433/central?sslmode=disable
+      CENTRAL_URL: 'central_app:8080'
+      PORT: 8081
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
 
   backend:
     container_name: central_app

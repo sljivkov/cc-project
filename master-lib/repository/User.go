@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"errors"
 	"master/domain"
 
 	"github.com/jinzhu/gorm"
@@ -27,11 +26,11 @@ func (r *UserRepository) Register(user *domain.User) (uint, error) {
 		Address:   user.Address,
 	}
 	// maybe test this later
-	result := r.DB.Find(&userModel)
-	if result.RowsAffected > 0 {
-		return 0, errors.New("primary key constraint")
-	}
-	result = r.DB.Create(&userModel)
+	// result := r.DB.Where(" ssn = ?", user.SSN).First(&userModel)
+	// if result.RowsAffected > 0 {
+	// 	return 0, errors.New("primary key constraint")
+	// }
+	result := r.DB.Create(&userModel)
 	if result.Error != nil {
 		return 0, result.Error
 	}
