@@ -23,9 +23,7 @@ services:
 
   client:
     container_name: client_app_1
-    build:
-      context: ./work-lib
-      dockerfile: Dockerfile
+    image: wombat19/cc-project-worker:latest
     environment:
       DATABASE_URL: postgres-worker://admin:postgres:5433/central?sslmode=disable
       CENTRAL_URL: 'central_app:8080'
@@ -37,9 +35,7 @@ services:
 
   backend:
     container_name: central_app
-    build:
-      context: ./master-lib
-      dockerfile: Dockerfile
+    image: wombat19/cc-project:latest
     environment:
       DATABASE_URL: postgres://admin:posgtres@postgres:5432/central?sslmode=disable
       PORT: 8080

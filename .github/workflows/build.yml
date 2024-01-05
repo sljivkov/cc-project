@@ -19,7 +19,13 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and Push Docker Image
+    - name: Build and Push Docker Image for master
       run: |
         docker build -t wombat19/cc-project:latest ./master-lib
         docker push wombat19/cc-project:latest
+    
+    - name: Build and Push Docker Image for worker
+      run: |
+        docker build -t wombat19/cc-project-worker:latest ./work-lib
+        docker push wombat19/cc-project-worker:latest
+    
