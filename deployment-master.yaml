@@ -1,0 +1,33 @@
+apiVersion: apps/v1 
+kind: Deployment 
+metadata:
+  name: master-app
+spec: 
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: master-app
+  template:
+    metadata:
+      labels:
+        app: master-app
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "central"
+            - name: POSTGRES_USER
+              value: "admin"
+            - name: POSTGRES_PASSWORD
+              value: "posgtres"
+        - name: backend
+          image: wombat19/cc-project:latest
+          ports:
+            - containerPort: 8080  # Adjust the port as needed
+          env:
+            - name: DATABASE_URL
+              value: postgres://admin:posgtres@localhost:5432/central?sslmode=disable       
