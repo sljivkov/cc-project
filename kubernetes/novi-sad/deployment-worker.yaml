@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels: 
-      app: worker-app
+      run: worker-app
   template:
     metadata:
       labels:
-        app: worker-app
+        run: worker-app
     spec:
       containers:
         - name: postgres
@@ -24,12 +24,21 @@ spec:
               value: "admin"
             - name: POSTGRES_PASSWORD
               value: "posgtres"
+          volumeMounts:
+            - name: worker-postgres
+              mountPath: /var/lib/postgres/data
         - name: backend
           image: wombat19/cc-project-worker:latest
           ports:
             - containerPort: 8080  # Adjust the port as needed
           env:
+            - name: PORT
+              value: "8080"
             - name: DATABASE_URL
               value: "postgres://admin:posgtres@localhost:5432/central?sslmode=disable"       
             - name: CENTRAL_URL
-              value: "url_post:8080"
+              value: "master-app"
+      volumes:
+        - name: worker-postgres
+          persistentVolumeClaim:
+            claimName: worker-postgres-pvc
