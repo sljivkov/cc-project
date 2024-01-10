@@ -44,7 +44,7 @@ services:
       DATABASE_URL: postgres://admin:posgtres@postgres-central:5432/central?sslmode=disable
       PORT: 8080
     ports:
-      - "8080:8080"
+      - "8000:8080"
     depends_on:
       - postgres
 
@@ -54,23 +54,23 @@ services:
     environment:
       POSTGRES_DB: central
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: posgtres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5434:5432"
     volumes:
       - ./data/beograd:/var/lib/postgresql/data
 
-  client-belgrade:
-    container_name: client-belgrade
-    image: wombat19/cc-project-worker:latest
-    environment:
-      DATABASE_URL: postgres://admin:postgres@postgres-belgrade:5434/central?sslmode=disable
-      CENTRAL_URL: 'central_app:8080'
-      PORT: 8082
-    ports:
-      - "8082:8082"
-    depends_on:
-      - postgres-belgrade
+  # client-belgrade:
+  #   container_name: client-belgrade
+  #   image: wombat19/cc-project-worker:latest
+  #   environment:
+  #     DATABASE_URL: postgres://admin:postgres@postgres-belgrade:5434/central?sslmode=disable
+  #     CENTRAL_URL: 'central_app:8080'
+  #     PORT: 8082
+  #   ports:
+  #     - "8082:8082"
+  #   depends_on:
+  #     - postgres-belgrade
 
   postgres-nis:
     container_name: postgres
@@ -78,7 +78,7 @@ services:
     environment:
       POSTGRES_DB: central
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: posgtres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5435:5432"
     volumes:
