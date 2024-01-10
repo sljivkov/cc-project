@@ -1,16 +1,16 @@
 apiVersion: apps/v1 
 kind: Deployment 
 metadata:
-  name: master-app
+  name: nis
 spec: 
   replicas: 1
   selector:
     matchLabels: 
-      run: master-app
+      run: nis
   template:
     metadata:
       labels:
-        run: master-app
+        run: nis
     spec:
       containers:
         - name: postgres
@@ -25,19 +25,20 @@ spec:
             - name: POSTGRES_PASSWORD
               value: "posgtres"
           volumeMounts:
-            - name: central-postgres
+            - name: nis-postgres
               mountPath: /var/lib/postgresql/data
-          
         - name: backend
-          image: wombat19/cc-project:latest
+          image: wombat19/cc-project-worker:latest
           ports:
             - containerPort: 8080  # Adjust the port as needed
           env:
             - name: PORT
-              value : "8080"
+              value: "8080"
             - name: DATABASE_URL
-              value: postgres://admin:posgtres@localhost:5432/central?sslmode=disable       
+              value: "postgres://admin:posgtres@localhost:5432/central?sslmode=disable"       
+            - name: CENTRAL_URL
+              value: "master-app"
       volumes:
-        - name: central-postgres
+        - name: nis-postgres
           persistentVolumeClaim:
-            claimName: central-postgres-pvc
+            claimName: nis-postgres-pvc
