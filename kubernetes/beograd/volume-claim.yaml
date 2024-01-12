@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: belgrade-postgres-pvc
 spec:
+  volumeName: belgrade-postgres
   resources:
     requests:
       storage: 1Gi 

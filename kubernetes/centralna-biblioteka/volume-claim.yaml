@@ -1,8 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: central-postgres-pvc
+  name: central-pvc
 spec:
+  volumeName: central-postgres
+  selector:
+    matchLabels:
+      name: central-postgres
   resources:
     requests:
       storage: 1Gi 

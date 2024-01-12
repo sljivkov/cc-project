@@ -3,6 +3,7 @@ kind: PersistentVolume
 metadata:
   name: central-postgres
 spec:
+  storageClassName: standard
   capacity:
     storage: 1Gi
   accessModes:

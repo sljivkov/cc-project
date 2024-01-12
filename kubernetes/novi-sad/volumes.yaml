@@ -3,9 +3,10 @@ kind: PersistentVolume
 metadata:
   name: worker-postgres
 spec:
+  storageClassName: standard
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data"
+    path: "/data-kube/novisad"
