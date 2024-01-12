@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"master/domain"
 	"time"
@@ -55,8 +56,9 @@ func (repo *BorrowRepository) Return(borrowId uint) error {
 
 func (repo *BorrowRepository) valid_borrow(borrow *domain.Borrow) bool {
 	borrows := []BorrowModel{}
-	// dodati date of returnign proveru
 	repo.db.Where("user_id = ? and date_of_returning = ?", borrow.UserId, "").Find(&borrows)
+
+	fmt.Println(borrows)
 	if len(borrows) >= 3 {
 		log.Println("too much books")
 		return false

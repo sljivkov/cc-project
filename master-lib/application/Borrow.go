@@ -1,7 +1,6 @@
 package application
 
 import (
-	"errors"
 	"master/domain"
 	"master/repository"
 )
@@ -19,10 +18,7 @@ func NewBorrowService(repo *repository.BorrowRepository, bookRepo *repository.Bo
 }
 
 func (service *BorrowService) Borrow(borrow *domain.Borrow) (uint, error) {
-	if service.bookRepository.BookWithIsbn(borrow.ISBN) {
-		return service.borrowRepository.Borrow(borrow)
-	}
-	return 0, errors.New("No book with that isbn")
+	return service.borrowRepository.Borrow(borrow)
 }
 
 func (service *BorrowService) Return(borrowId uint) error {
