@@ -56,7 +56,13 @@ func (service *BorrowService) Return(borrowId uint) error {
 	}
 	jsonPayload, _ := json.Marshal(id)
 	targetUrl, _ := url.Parse("http://" + service.serverUrl + "/return")
-	response, _ := http.Post(targetUrl.String(), "application/json", bytes.NewBuffer(jsonPayload))
+	req, _ := http.NewRequest("PATCH", targetUrl.String(), bytes.NewBuffer(jsonPayload))
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	response, err := client.Do(req)
+	if err != nil {
+		return err
+	}
 	if response.StatusCode == 400 {
 		return errors.New("you can't return ")
 	}
