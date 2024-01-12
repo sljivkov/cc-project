@@ -2,7 +2,8 @@ package repository
 
 import (
 	"master/domain"
-
+	"fmt"
+	"errors"
 	"github.com/jinzhu/gorm"
 )
 
@@ -10,7 +11,7 @@ type UserModel struct {
 	gorm.Model
 	FirstName string
 	LastName  string
-	SSN       string `gorm:"primaryKey;autoIncrement:false"`
+	SSN       string `gorm:"primaryKey;autoIncrement:false"` 
 	Address   string
 }
 
@@ -25,12 +26,15 @@ func (r *UserRepository) Register(user *domain.User) (uint, error) {
 		SSN:       user.SSN,
 		Address:   user.Address,
 	}
+
+	userExist := UserModel{}
 	// maybe test this later
-	// result := r.DB.Where(" ssn = ?", user.SSN).First(&userModel)
-	// if result.RowsAffected > 0 {
-	// 	return 0, errors.New("primary key constraint")
-	// }
-	result := r.DB.Create(&userModel)
+	result := r.DB.Where("ssn = ?", user.SSN).First(&userExist)
+	if result.RowsAffected > 0 {
+		return 0, errors.New("primary key constraint")
+	}
+	fmt.Println(userExist)
+	result  = r.DB.Create(&userModel)
 	if result.Error != nil {
 		return 0, result.Error
 	}
