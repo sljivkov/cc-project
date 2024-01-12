@@ -27,7 +27,7 @@ func NewBorrowService(url string, repo *repository.BorrowRepository) *BorrowServ
 }
 
 func (service *BorrowService) Borrow(borrow *domain.Borrow) (uint, error) {
-	targetUrl, _ := url.Parse("http://" + service.serverUrl + "/user/register")
+	targetUrl, _ := url.Parse("http://" + service.serverUrl + "/borrow")
 	jsonPayload, _ := json.Marshal(borrow)
 	response, err := http.Post(targetUrl.String(), "application/json", bytes.NewBuffer(jsonPayload))
 	if err != nil {
